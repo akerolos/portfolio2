@@ -398,7 +398,7 @@ html[dir="ltr"] .hero__bio {
   padding: 28px 30px;
 }
 .hero__stat-card--float1 { bottom: 60px; left: -20px; width: 160px; }
-.hero__stat-card--float2 { top: 18px; right: -20px; width: 145px; }
+.hero__stat-card--float2 { top: 18px; right: -20px; width: auto; min-width: 145px; padding: 18px 22px; }
 .stat-number {
   font-family: var(--font-display);
   font-size: 2.5rem;
@@ -406,6 +406,7 @@ html[dir="ltr"] .hero__bio {
   letter-spacing: -0.04em;
   line-height: 1;
   color: var(--ink-primary);
+  white-space: nowrap;
 }
 .stat-number span { color: var(--accent); }
 .stat-label {
@@ -556,9 +557,8 @@ html[dir="ltr"] .hero__bio {
   border: 1px solid var(--border-soft);
   overflow: hidden;
   cursor: pointer;
-  transition: box-shadow var(--transition-base), border-color var(--transition-base), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow var(--transition-base), border-color var(--transition-base), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-sm);
-  will-change: transform, opacity;
 }
 .project-card:hover {
   box-shadow: var(--shadow-xl);
@@ -585,14 +585,19 @@ html[dir="ltr"] .hero__bio {
   overflow: hidden;
   background: linear-gradient(135deg, #f0eeff, #e8e4ff);
 }
-.card__media::after {
-  content: '';
+
+/* ── Card Media Image (Outside Modal) ── */
+.card__media-img {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(13,13,18,0.16) 0%, transparent 55%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
   z-index: 1;
-  pointer-events: none;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.project-card:hover .card__media-img { transform: scale(1.05); }
 
 /* ── Card Preview Placeholder ── */
 .card__preview-placeholder {
@@ -601,6 +606,7 @@ html[dir="ltr"] .hero__bio {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  z-index: 0;
 }
 .cp-nav {
   height: 28px;
@@ -635,6 +641,7 @@ html[dir="ltr"] .hero__bio {
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
+  z-index: 2;
 }
 .project-card:hover .card__preview-placeholder::after { opacity: 1; }
 
@@ -746,7 +753,7 @@ html[dir="ltr"] .hero__bio {
 .card__badge {
   position: absolute;
   top: 12px; right: 12px;
-  z-index: 2;
+  z-index: 3;
   padding: 4px 12px;
   border-radius: var(--radius-pill);
   background: rgba(255,255,255,0.95);
@@ -1597,6 +1604,7 @@ const PROJECTS = [
     category: 'Agencies',
     theme: 'cp--nexus',
     link: 'https://akerolos.github.io/nexus-agency/',
+    image: 'https://z-cdn-media.chatglm.cn/files/a0c2db64-4448-4375-baa6-82134b236f93.png?auth_key=1882645992-778e70378ced4574a5a95342728527c4-0-8f0e5f65acc2e9b7c26438958a7539aa',
     bullets: {
       en: ['Dark futuristic design with gradient accents and glassmorphism', 'Fully responsive across all breakpoints with smooth animations', 'Optimized loading with lazy-loaded sections and minimal assets'],
       ar: ['تصميم مستقبلي داكن مع تدرجات لونية وتأثيرات زجاجية', 'متجاوب بالكامل مع أنيميشن سلسة على كل الشاشات', 'تحميل محسّن بأقسام تحميل كسول وأصول مصغرة']
@@ -1612,6 +1620,7 @@ const PROJECTS = [
     category: 'Services',
     theme: 'cp--realestate',
     link: '#',
+    image: 'https://z-cdn-media.chatglm.cn/files/b4f06ca1-b469-4eb5-8724-4c02acee9c6f.png?auth_key=1882645992-c17ab32d421845c7bde0fdad3c0e120c-0-4689e25829ce9d88a110f93df33db253',
     bullets: {
       en: ['Elegant dark-gold luxury aesthetic with refined typography', 'Property showcase grid with hover effects and quick-view modals', 'Strategic CTA placement optimized for lead generation conversion'],
       ar: ['جمالية فاخرة داكنة-ذهبية مع طباعة أنيقة', 'شبكة عرض العقارات مع تأثيرات hover ونوافذ عرض سريع', 'مواضع CTA استراتيجية محسّنة لتحويل العملاء المحتملين']
@@ -1627,6 +1636,7 @@ const PROJECTS = [
     category: 'Tech & Gym',
     theme: 'cp--chronox',
     link: '#',
+    image: 'https://z-cdn-media.chatglm.cn/files/71e24619-9f2c-425e-9629-9cde70e8056b.png?auth_key=1882645992-0e69cbd9aac04f8d9966457517a1b99e-0-81df837086354af3eaa6baa79c5a0c63',
     bullets: {
       en: ['Sleek tech-dark theme with cyan accent color system', 'Feature sections with animated counters and progress indicators', 'Mobile-first responsive design with touch-friendly interactions'],
       ar: ['ثيم تقني داكن أنيق مع نظام ألوان سيان', 'أقسام الميزات بعدادات متحركة ومؤشرات تقدم', 'تصميم متجاوب mobile-first مع تفاعلات مناسبة لللمس']
@@ -1642,6 +1652,7 @@ const PROJECTS = [
     category: 'Tech & Gym',
     theme: 'cp--forgefit',
     link: '#',
+    image: 'https://z-cdn-media.chatglm.cn/files/8130db2f-f8c7-462e-aceb-24284dbea4bd.png?auth_key=1882645992-5003ce51e889479eba93212ea1212055-0-63b6118c2935566a86fc85b175575566',
     bullets: {
       en: ['Bold fire-orange branding with high-energy visual language', 'Class schedule with interactive filtering and booking CTAs', 'Before/after transformation gallery with lazy-loaded images'],
       ar: ['علامة تجارية برتقالية نارية جريئة مع لغة بصرية عالية الطاقة', 'جدول الدروس مع تصفية تفاعلية وأزرار حجز', 'معرض تحولات قبل/بعد مع صور محملة كسولاً']
@@ -1657,6 +1668,7 @@ const PROJECTS = [
     category: 'Services',
     theme: 'cp--curaflow',
     link: '#',
+    image: 'https://z-cdn-media.chatglm.cn/files/565a51aa-2496-4110-843a-a2e9ec025e2e.png?auth_key=1882645992-2d1ba1cacb1a4d8884b2be72c85572d5-0-58b0276e7cd8557c0e7224767c898c79',
     bullets: {
       en: ['Clean medical-blue light theme conveying trust and professionalism', 'Service cards with icon system and clear hierarchy', 'Appointment booking flow with form validation and accessibility'],
       ar: ['ثيم طبي أزرق فاتح نظيف يوحي بالثقة والاحترافية', 'بطاقات الخدمات بنظام أيقونات وتسلسل هرمي واضح', 'مسار حجز مواعيد مع تحقق من النماذج وإمكانية الوصول']
@@ -1672,6 +1684,7 @@ const PROJECTS = [
     category: 'Services',
     theme: 'cp--restaurant',
     link: '#',
+    image: 'https://z-cdn-media.chatglm.cn/files/29cd5036-4f23-4050-b2ea-8b332362fc0f.png?auth_key=1882645992-13148d56a9234b06bde51ae11cb7bdcf-0-6fd739153ad4d15a1ced3fc6acfe01f6',
     bullets: {
       en: ['Warm earthy dark theme with amber accents for appetite appeal', 'Menu sections with category tabs and food photography layout', 'Reservation widget with date picker and guest count selector'],
       ar: ['ثيم داكن دافئ بألوان ترابية مع لمسات كهرمانية جاذبة', 'أقسام القائمة بتبويبات تصنيف وتخطيط صور الطعام', 'ويدجت حجز مع منتقي تاريخ وعداد عدد الضيوف']
@@ -1687,6 +1700,7 @@ const PROJECTS = [
     category: 'Agencies',
     theme: 'cp--agency',
     link: '#',
+    image: 'https://z-cdn-media.chatglm.cn/files/1f23e184-74f4-48d1-b20f-de323135cb8b.png?auth_key=1882645992-c273a68be54a41a2a9d1b811a1264a06-0-a53a64890a0197213c2916d9f8077e64',
     bullets: {
       en: ['Professional dark-navy corporate design with purple accents', 'Client logo marquee and testimonial carousel sections', 'Contact form with smart validation and success feedback'],
       ar: ['تصميم مؤسسي احترافي بأزرق داكن مع لمسات بنفسجية', 'شريط شعارات العملاء وكاروسيل شهادات العملاء', 'نموذج تواصل مع تحقق ذكي وتغذية راجعة نجاح']
@@ -1715,16 +1729,12 @@ const scrollTopBtn = $('#scroll-top');
 const nav = $('.nav');
 const scrollProgress = $('.scroll-progress');
 
-// ── Filter Indicator — THE FIX ──
-// This function calculates and sets the indicator position based on
-// the currently active button. Called on: init, filter click, AND after language switch.
+// ── Filter Indicator ──
 function updateFilterIndicator() {
   const activeBtn = $('.filter-btn.active', filterBarInner);
   if (!activeBtn || !filterIndicator) return;
-  // Calculate the offset of the button relative to the filter container
   const containerRect = filterBarInner.getBoundingClientRect();
   const btnRect = activeBtn.getBoundingClientRect();
-  // 6px is the padding of filter-bar__inner
   const leftOffset = btnRect.left - containerRect.left - 6;
   filterIndicator.style.width = btnRect.width + 'px';
   filterIndicator.style.transform = 'translateX(' + leftOffset + 'px)';
@@ -1760,6 +1770,7 @@ function renderProjects() {
             '<div class="cp-cards"><div class="cp-card"></div><div class="cp-card"></div><div class="cp-card"></div></div>' +
           '</div>' +
         '</div>' +
+        '<img class="card__media-img" src="' + proj.image + '" alt="' + proj.title[lang] + '" loading="lazy" decoding="async" onerror="this.style.display=\'none\'" />' +
         '<span class="card__badge">' + proj.category + '</span>' +
       '</div>' +
       '<div class="card__body">' +
@@ -1795,15 +1806,12 @@ function applyFilter(filter, animate) {
     }
   });
 
-  // Update active button
   $$('.filter-btn', filterBarInner).forEach(function(btn) {
     var isActive = btn.getAttribute('data-filter') === filter;
     btn.classList.toggle('active', isActive);
     btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
   });
 
-  // ★ THE KEY FIX: Always update indicator after changing active state
-  // Use requestAnimationFrame to ensure the browser has reflowed with new text widths
   requestAnimationFrame(function() {
     updateFilterIndicator();
   });
@@ -1840,18 +1848,15 @@ function openModal(proj) {
     bulletsContainer.appendChild(li);
   });
 
-  // Reset loading state
   var loading = $('#modal-loading');
   var img = $('#modal-img');
   loading.classList.remove('hidden');
   img.style.opacity = '0';
 
-  // Show modal
   modalOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  // Try loading screenshot
-  if (proj.link && proj.link !== '#') {
+  if (proj.image) {
     img.onload = function() {
       loading.classList.add('hidden');
       img.style.opacity = '1';
@@ -1860,7 +1865,7 @@ function openModal(proj) {
     img.onerror = function() {
       loading.classList.add('hidden');
     };
-    img.src = proj.link;
+    img.src = proj.image;
   } else {
     loading.classList.add('hidden');
   }
@@ -1887,10 +1892,8 @@ function applyLanguage(lang) {
   html.setAttribute('lang', lang === 'ar' ? 'ar' : 'en');
   html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
 
-  // Update toggle button text
   $('#lang-toggle-label').textContent = lang === 'en' ? 'العربية' : 'English';
 
-  // Update all data-i18n elements
   $$('[data-i18n]').forEach(function(el) {
     var key = el.getAttribute('data-i18n');
     if (T[lang] && T[lang][key]) {
@@ -1898,7 +1901,6 @@ function applyLanguage(lang) {
     }
   });
 
-  // Update data-i18n-html elements
   $$('[data-i18n-html]').forEach(function(el) {
     var key = el.getAttribute('data-i18n-html');
     if (T[lang] && T[lang][key]) {
@@ -1906,12 +1908,8 @@ function applyLanguage(lang) {
     }
   });
 
-  // Re-render project cards with new language
   renderProjects();
 
-  // ★ THE FIX: After language change, button text widths have changed.
-  // We must recalculate the filter indicator position.
-  // Use double rAF to ensure the browser has fully reflowed with new text.
   requestAnimationFrame(function() {
     requestAnimationFrame(function() {
       updateFilterIndicator();
@@ -1957,7 +1955,7 @@ scrollTopBtn.addEventListener('click', function() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// ── Canvas Background — Subtle floating dots ──
+// ── Canvas Background ──
 (function initCanvas() {
   var canvas = $('#canvas-bg');
   var ctx = canvas.getContext('2d');
@@ -1984,7 +1982,7 @@ scrollTopBtn.addEventListener('click', function() {
   }
 
   function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0,0, canvas.width, canvas.height);
     dots.forEach(function(d) {
       d.x += d.vx;
       d.y += d.vy;
@@ -1998,7 +1996,6 @@ scrollTopBtn.addEventListener('click', function() {
       ctx.fill();
     });
 
-    // Draw subtle connections
     for (var i = 0; i < dots.length; i++) {
       for (var j = i + 1; j < dots.length; j++) {
         var dx = dots[i].x - dots[j].x;
@@ -2023,7 +2020,6 @@ scrollTopBtn.addEventListener('click', function() {
 
 // ── GSAP Animations ──
 window.addEventListener('load', function() {
-  // Wait for GSAP to be available
   function initGSAP() {
     if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
       setTimeout(initGSAP, 100);
@@ -2031,18 +2027,15 @@ window.addEventListener('load', function() {
     }
     gsap.registerPlugin(ScrollTrigger);
 
-    // Hero entrance
     gsap.from('.hero__eyebrow', { opacity: 0, y: 20, duration: 0.6, delay: 0.2 });
     gsap.from('.hero__heading', { opacity: 0, y: 30, duration: 0.7, delay: 0.35 });
     gsap.from('.hero__bio', { opacity: 0, y: 20, duration: 0.6, delay: 0.5 });
     gsap.from('.hero__actions', { opacity: 0, y: 20, duration: 0.6, delay: 0.65 });
 
-    // Hero cards
     gsap.from('.hero__stat-card--main', { opacity: 0, y: 40, duration: 0.8, delay: 0.5, ease: 'power3.out' });
     gsap.from('.hero__stat-card--float1', { opacity: 0, x: -30, y: 20, duration: 0.7, delay: 0.7, ease: 'power3.out' });
     gsap.from('.hero__stat-card--float2', { opacity: 0, x: 30, y: -20, duration: 0.7, delay: 0.8, ease: 'power3.out' });
 
-    // Section headers
     $$('.section-header').forEach(function(header) {
       gsap.from(header, {
         scrollTrigger: { trigger: header, start: 'top 85%', toggleActions: 'play none none none' },
@@ -2050,39 +2043,41 @@ window.addEventListener('load', function() {
       });
     });
 
-    // Project cards stagger
+    // ★ THE FIX: Using fromTo with clearProps to completely remove inline styles after animation
     ScrollTrigger.batch('.project-card.card-visible', {
       onEnter: function(elements) {
-        gsap.from(elements, { opacity: 0, y: 30, stagger: 0.08, duration: 0.5, ease: 'power2.out' });
+        gsap.fromTo(elements, 
+          { opacity: 0, y: 30 }, 
+          { opacity: 1, y: 0, stagger: 0.08, duration: 0.5, ease: 'power2.out', clearProps: 'opacity, transform' }
+        );
       },
       start: 'top 88%'
     });
 
-    // Skill cards
     ScrollTrigger.batch('.skill-card', {
       onEnter: function(elements) {
-        gsap.from(elements, { opacity: 0, y: 24, stagger: 0.06, duration: 0.5, ease: 'power2.out' });
+        gsap.fromTo(elements,
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, stagger: 0.06, duration: 0.5, ease: 'power2.out', clearProps: 'opacity, transform' }
+        );
       },
       start: 'top 88%'
     });
 
-    // Contact card
     gsap.from('.contact-card', {
       scrollTrigger: { trigger: '.contact-card', start: 'top 85%' },
-      opacity: 0, y: 30, duration: 0.7, ease: 'power2.out'
+      opacity: 0, y: 30, duration: 0.7, ease: 'power2.out', clearProps: 'opacity, transform'
     });
   }
 
   initGSAP();
 
-  // Initialize filter indicator after everything is loaded
   requestAnimationFrame(function() {
     requestAnimationFrame(function() {
       updateFilterIndicator();
     });
   });
 
-  // Also update on window resize (button widths may change)
   window.addEventListener('resize', function() {
     updateFilterIndicator();
   });
